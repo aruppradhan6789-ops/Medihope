@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediHope — Medical Campaign Fund Raising</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--p:#6366f1;--p2:#06b6d4;--g:#10b981;--ink:#0b1020;--muted:#64748b;--bg:#eef2ff;--card:#ffffffcc;--bd:#e2e8f0;--grad:linear-gradient(135deg,#6366f1,#06b6d4)}
+*{box-sizing:border-box}body{margin:0;font-family:'Plus Jakarta Sans',Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:radial-gradient(900px 500px at 10% -10%,#c7d2fe,transparent),radial-gradient(800px 500px at 100% 0,#a5f3fc,transparent),var(--bg);background-attachment:fixed;min-height:100vh}
+button,input,select,textarea{font:inherit}button{cursor:pointer;transition:.2s}
+header{position:sticky;top:0;z-index:20;padding:12px 20px;backdrop-filter:blur(14px);background:#0b1020d9;box-shadow:0 8px 30px #0b102033}
+.nav{max-width:1250px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.brand{font-size:21px;font-weight:800;color:#fff;display:flex;gap:10px;align-items:center}.brand span{background:var(--grad);border-radius:12px;padding:6px 9px;box-shadow:0 0 20px #6366f188}
+nav{display:flex;gap:6px;flex-wrap:wrap}nav button{background:transparent;color:#cbd5e1;border:0;padding:9px 14px;border-radius:999px;font-weight:600;font-size:14px}nav button:hover{color:#fff;background:#ffffff14}nav button.active{background:var(--grad);color:#fff}
+.userbox{display:flex;align-items:center;gap:10px;color:#e2e8f0;font-size:13px}.badge{background:#ffffff1f;border-radius:999px;padding:4px 10px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase}.badge.admin{background:#f59e0b;color:#1f1300}
+.container{max-width:1250px;margin:26px auto;padding:0 18px}.page{display:none}.page.active{display:block;animation:in .4s}@keyframes in{from{opacity:0;transform:translateY(12px)}}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#0b1020,#312e81 60%,#0e7490);color:#fff;border-radius:28px;padding:44px;display:grid;grid-template-columns:1.4fr .6fr;gap:24px;align-items:center;box-shadow:0 25px 60px #31288155}
+.hero:after{content:"";position:absolute;width:320px;height:320px;right:-80px;top:-100px;background:radial-gradient(#22d3ee66,transparent 70%)}
+.hero h1{font-size:42px;line-height:1.15;margin:12px 0}.hero h1 em{font-style:normal;background:linear-gradient(90deg,#a5b4fc,#67e8f9);-webkit-background-clip:text;color:transparent}.hero p{font-size:16px;color:#c7d2fe;line-height:1.7}
+.hero-stat{position:relative;z-index:1;background:#ffffff14;border:1px solid #ffffff2e;backdrop-filter:blur(10px);border-radius:22px;padding:24px;text-align:center}.hero-stat b{display:block;font-size:38px;margin:6px 0}.hero-stat .muted{color:#c7d2fe}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:700}.btn:hover{transform:translateY(-2px)}.btn.sm{padding:6px 11px;font-size:12px;border-radius:9px}.primary{background:var(--grad);color:#fff;box-shadow:0 8px 20px #6366f155}.secondary{background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;box-shadow:0 8px 20px #10b98144}.light{background:#fff;color:var(--ink);border:1px solid var(--bd)}.danger{background:#fee2e2;color:#991b1b}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.grid{display:grid;gap:18px}.cards{grid-template-columns:repeat(4,1fr);margin:22px 0}.card{background:var(--card);backdrop-filter:blur(10px);border:1px solid #fff;border-radius:20px;padding:22px;box-shadow:0 10px 30px #1e1b4b12;transition:.25s}.card:hover{box-shadow:0 18px 40px #1e1b4b1f}
+.metric .label{color:var(--muted);font-size:13px;font-weight:600}.metric .value{font-size:30px;font-weight:800;margin-top:6px;background:var(--grad);-webkit-background-clip:text;color:transparent}.metric .trend{color:var(--g);font-size:12px;margin-top:5px}
+.two{grid-template-columns:1.3fr .7fr}.three{grid-template-columns:repeat(3,1fr)}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:26px 0 14px;gap:10px;flex-wrap:wrap}.section-title h2{margin:0;font-size:22px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+.campaign-grid{grid-template-columns:repeat(3,1fr)}.campaign{overflow:hidden;padding:0}.campaign:hover{transform:translateY(-6px)}.campaign .cover{height:140px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:54px;color:#fff;text-shadow:0 6px 20px #0004}.campaign-body{padding:18px}
+.tag{display:inline-block;background:#e0e7ff;color:#4338ca;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800;letter-spacing:.4px}
+.progress{height:10px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:12px 0}.progress i{display:block;height:100%;background:var(--grad);border-radius:99px}.amounts{display:flex;justify-content:space-between;font-size:13px}.muted{color:var(--muted)}
+table{width:100%;border-collapse:collapse;background:#fff}.table-wrap{overflow:auto;padding:0}th,td{padding:14px;text-align:left;border-bottom:1px solid var(--bd);font-size:13px;white-space:nowrap}th{background:#f8fafc;color:#475569}.status{padding:4px 9px;border-radius:999px;font-size:11px;font-weight:700}.completed,.active-s{background:#dcfce7;color:#166534}.cancelled,.closed-s{background:#fee2e2;color:#991b1b}
+form{display:grid;gap:14px}label{font-size:13px;font-weight:700;color:#334155;display:block}label>input,label>select,label>textarea{margin-top:6px}
+input,select,textarea{width:100%;border:1.5px solid #cbd5e1;border-radius:12px;padding:12px;background:#fff;outline:none;transition:.2s}input:focus,select:focus,textarea:focus{border-color:var(--p);box-shadow:0 0 0 4px #6366f122}input[readonly]{background:#f1f5f9;color:#64748b}
+.modal{position:fixed;inset:0;background:#0b102099;backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}.modal.show{display:flex}.modal-box{background:#fff;border-radius:22px;max-width:520px;width:100%;padding:26px;max-height:90vh;overflow:auto;animation:in .3s}.modal-head{display:flex;justify-content:space-between;align-items:center}.close{background:#f1f5f9;border:0;border-radius:8px;padding:8px 11px}
+.toast{position:fixed;right:20px;bottom:20px;background:#0b1020;color:#fff;padding:13px 18px;border-radius:12px;display:none;z-index:100}.toast.show{display:block}
+footer{margin-top:40px;padding:28px;background:#0b1020;color:#94a3b8;text-align:center}.small{font-size:12px}.search{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}.search input{max-width:380px}.search select{max-width:200px}
+.chart{height:220px;display:flex;align-items:end;gap:12px;padding:15px 5px 28px}.bar{flex:1;background:var(--grad);border-radius:9px 9px 3px 3px;position:relative;min-height:6px;opacity:.9}.bar:hover{opacity:1}.bar span{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-size:10px;color:#64748b}
+.alert{padding:12px 14px;border-radius:12px;background:#fffbeb;border:1px solid #fde68a;color:#92400e;font-size:13px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.chip{border:1.5px solid var(--bd);background:#fff;border-radius:999px;padding:6px 14px;font-weight:700;font-size:13px}.chip:hover{border-color:var(--p);color:var(--p)}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#e2e8f0;padding:5px;border-radius:14px}.tabs button{border:0;background:transparent;padding:10px;border-radius:10px;font-weight:700;font-size:13px;color:#475569}.tabs button.on{background:#fff;color:var(--p);box-shadow:0 4px 12px #0001}
+.pay{display:none;animation:in .3s}.pay.on{display:grid;gap:12px}
+.qrbox{display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center;background:#fff;border:1.5px dashed #a5b4fc;border-radius:18px;padding:18px}#qr{padding:10px;background:#fff;border-radius:12px;box-shadow:0 6px 20px #0001;min-width:160px;min-height:160px}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--bd);font-size:14px}.kv:last-child{border:0}.kv span{color:var(--muted)}.kv b{word-break:break-all;text-align:right}.copy{border:0;background:#e0e7ff;color:#4338ca;border-radius:8px;padding:4px 9px;font-size:11px;font-weight:700}
+.creditcard{background:linear-gradient(135deg,#1e1b4b,#6366f1 60%,#06b6d4);color:#fff;border-radius:18px;padding:20px;aspect-ratio:1.9;max-width:360px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 18px 40px #6366f155;margin:auto}.creditcard .num{font-size:21px;letter-spacing:3px;font-family:monospace}.creditcard .row{display:flex;justify-content:space-between;font-size:12px;opacity:.9;text-transform:uppercase}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* login */
+#auth{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto;background:radial-gradient(900px 500px at 10% -10%,#c7d2fe,transparent),radial-gradient(800px 500px at 100% 0,#a5f3fc,transparent),var(--bg)}
+.authbox{background:#fff;border-radius:26px;max-width:440px;width:100%;padding:32px;box-shadow:0 30px 70px #31288133}.authbox h1{margin:0 0 4px;font-size:26px}.authbox .brand{color:var(--ink);margin-bottom:14px}
+.authtabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#e2e8f0;padding:5px;border-radius:14px;margin:16px 0}.authtabs button{border:0;background:transparent;padding:10px 4px;border-radius:10px;font-weight:700;font-size:13px;color:#475569}.authtabs button.on{background:#fff;color:var(--p);box-shadow:0 4px 12px #0001}
+.hidden{display:none!important}
+.authtabs button{font-size:12px;padding:10px 2px}.pending-s{background:#fef3c7;color:#92400e}.rejected-s{background:#fee2e2;color:#991b1b}.verified-s{background:#dcfce7;color:#166534}.vgrid{grid-template-columns:repeat(auto-fill,minmax(360px,1fr))}.vinfo{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:13px;margin:12px 0}.vinfo span{color:var(--muted);display:block;font-size:11px}.campaign .cover img{width:100%;height:100%;object-fit:cover}.cleared{background:#dcfce7;color:#166534}.proofimg{max-width:100%;border-radius:12px;border:1px solid var(--bd)}.util-bar{height:8px;min-width:90px;background:#e2e8f0;border-radius:99px;overflow:hidden}.util-bar i{display:block;height:100%;background:linear-gradient(90deg,#10b981,#06b6d4)}.bill-desc{white-space:normal;min-width:180px;max-width:260px}
+@media(max-width:900px){.hero,.two,.campaign-grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.cards,.three,.row2{grid-template-columns:1fr}.hero{padding:26px}.hero h1{font-size:29px}nav{width:100%}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div id="auth">
+  <div class="authbox">
+    <div class="brand"><span>❤</span> MediHope</div>
+    <h1 id="authTitle">Welcome back</h1>
+    <div class="muted small">Medical Campaign Fund Raising System</div>
+    <div class="authtabs" id="authTabs">
+      <button class="on" data-t="donor">Donor Login</button>
+      <button data-t="signup">Donor Sign Up</button>
+      <button data-t="kLogin">Campaign Login</button>
+      <button data-t="kSignup">Campaign Sign Up</button>
+      <button data-t="admin">Admin Login</button>
+    </div>
+    <form id="fDonor" onsubmit="doLogin(event,'donor')">
+      <label>Email<input id="dEmail" type="email" required autocomplete="username" placeholder="you@example.com"></label>
+      <label>Password<input id="dPass" type="password" required autocomplete="current-password"></label>
+      <button class="btn primary" type="submit">Login as Donor</button>
+    </form>
+    <form id="fSignup" class="hidden" onsubmit="doSignup(event)">
+      <label>Full Name<input id="sName" required placeholder="Rahul Sharma"></label>
+      <label>Email<input id="sEmail" type="email" required placeholder="you@example.com"></label>
+      <div class="row2"><label>Password<input id="sPass" type="password" minlength="6" required autocomplete="new-password"></label>
+      <label>Confirm<input id="sPass2" type="password" minlength="6" required autocomplete="new-password"></label></div>
+      <button class="btn secondary" type="submit">Create Donor Account</button>
+    </form>
+    <form id="fCampLogin" class="hidden" onsubmit="doLogin(event,'campaign')">
+      <label>Email<input id="kEmail" type="email" required autocomplete="username" placeholder="you@example.com"></label>
+      <label>Password<input id="kPass" type="password" required autocomplete="current-password"></label>
+      <button class="btn primary" type="submit">Login to Campaign Account</button>
+    </form>
+    <form id="fCampSignup" class="hidden" onsubmit="doCampSignup(event)">
+      <label>Full Name (patient or family member)<input id="ksName" required placeholder="Rahul Sharma"></label>
+      <div class="row2"><label>Email<input id="ksEmail" type="email" required placeholder="you@example.com"></label>
+      <label>Phone<input id="ksPhone" type="tel" required pattern="[+]?[0-9 ]{10,15}" placeholder="9876543210"></label></div>
+      <div class="row2"><label>Password<input id="ksPass" type="password" minlength="6" required autocomplete="new-password"></label>
+      <label>Confirm<input id="ksPass2" type="password" minlength="6" required autocomplete="new-password"></label></div>
+      <button class="btn secondary" type="submit">Create Campaign Account</button>
+      <div class="alert">For patients or families raising funds. Your campaign goes live only after our admin team verifies the patient details.</div>
+    </form>
+    <form id="fAdmin" class="hidden" onsubmit="doLogin(event,'admin')">
+      <label>Admin Username<input id="aUser" required autocomplete="username" placeholder="admin"></label>
+      <label>Password<input id="aPass" type="password" required autocomplete="current-password"></label>
+      <button class="btn primary" type="submit">Login as Admin</button>
+      <div class="alert">Demo admin: username <b>admin</b> · password <b>admin123</b>. Change it from Admin → Settings after login.</div>
+    </form>
+    <div id="authMsg" class="small" style="color:#b91c1c;margin-top:12px;min-height:16px"></div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app" class="hidden">
+<header>
+  <div class="nav">
+    <div class="brand"><span>❤</span> MediHope</div>
+    <nav id="mainNav"></nav>
+    <div class="userbox"><span id="whoName"></span><span class="badge" id="whoRole"></span><button class="btn light sm" onclick="logout()">Logout</button></div>
+  </div>
+</header>
+
+<main class="container">
+
+<!-- ADMIN: dashboard -->
+<section id="dashboard" class="page">
+  <div class="hero">
+    <div>
+      <span class="tag">ADMIN CONTROL CENTER</span>
+      <h1>Manage every <em>campaign &amp; donation.</em></h1>
+      <p>Monitor funds, control campaigns and transactions, and move data in and out through Excel sheets.</p>
+      <div class="actions"><button class="btn primary" onclick="showPage('campaigns')">Manage Campaigns</button>
+      <button class="btn light" onclick="exportXLSX('all')">⬇ Download Excel</button></div>
+    </div>
+    <div class="hero-stat"><span class="muted">Funds Raised</span><b id="heroRaised">₹0</b><span class="muted">across all campaigns</span></div>
+  </div>
+  <div class="grid cards">
+    <div class="card metric"><div class="label">Total Raised</div><div class="value" id="mRaised">₹0</div><div class="trend">Completed donations only</div></div>
+    <div class="card metric"><div class="label">Active Campaigns</div><div class="value" id="mCampaigns">0</div><div class="trend">Accepting donations</div></div>
+    <div class="card metric"><div class="label">Registered Donors</div><div class="value" id="mDonors">0</div><div class="trend">Donor accounts</div></div>
+    <div class="card metric"><div class="label">Successful Donations</div><div class="value" id="mDonations">0</div><div class="trend">Completed payments</div></div>
+  </div>
+  <div class="grid two">
+    <div class="card"><div class="section-title"><h2>Donations — Last 7 Days</h2><span class="small muted">in ₹</span></div><div id="chart" class="chart"></div></div>
+    <div class="card"><div class="section-title"><h2>Top Campaigns</h2></div><div id="topCamps"></div></div>
+  </div>
+</section>
+
+<!-- BOTH: campaigns -->
+<section id="campaigns" class="page">
+  <div class="section-title"><h2 id="campTitle">Medical Campaigns</h2>
+    <div class="actions admin-only">
+      <button class="btn primary" onclick="openCampaignModal()">+ Create Campaign</button>
+      <button class="btn light" onclick="exportXLSX('camp')">⬇ Export Excel</button>
+      <label class="btn light" style="cursor:pointer;margin:0">⬆ Import Excel<input type="file" accept=".xlsx,.xls,.csv" class="hidden" onchange="importXLSX(this.files[0],'camp');this.value=''"></label>
+    </div></div>
+  <div class="search"><input id="campaignSearch" placeholder="Search campaign..." oninput="renderCampaigns()"><select id="categoryFilter" onchange="renderCampaigns()"><option value="">All categories</option><option>Emergency</option><option>Surgery</option><option>Treatment</option><option>Child Care</option></select></div>
+  <div id="campaignGrid" class="grid campaign-grid"></div>
+  <div id="campaignTable" class="card table-wrap hidden"></div>
+</section>
+
+<!-- DONOR: donate -->
+<section id="donate" class="page">
+  <div class="grid two">
+    <div class="card">
+      <div class="section-title"><h2>Make a Donation</h2></div>
+      <form id="donationForm">
+        <label>Choose Campaign<select id="donCampaign" required></select></label>
+        <div class="row2"><label>Donor Name<input id="donorName" required></label>
+        <label>Email<input id="donorEmail" type="email" readonly></label></div>
+        <label>Donation Amount (₹) — minimum ₹2,000<input id="donAmount" type="number" min="2000" required placeholder="2000" oninput="updateQR()"></label>
+        <div class="chips"><button type="button" class="chip" onclick="setAmt(2000)">₹2,000</button><button type="button" class="chip" onclick="setAmt(5000)">₹5,000</button><button type="button" class="chip" onclick="setAmt(10000)">₹10,000</button><button type="button" class="chip" onclick="setAmt(25000)">₹25,000</button></div>
+        <label>Payment Method</label>
+        <div class="tabs" id="payTabs"><button type="button" class="on" data-m="upi">📱 UPI / QR</button><button type="button" data-m="card">💳 Card</button><button type="button" data-m="bank">🏦 Bank</button></div>
+        <div class="pay on" id="pay-upi"><div class="qrbox"><div id="qr"></div><div><b>Scan &amp; pay with any UPI app</b><p class="small muted">GPay, PhonePe, Paytm, BHIM<br>QR updates with the amount.</p><div class="kv"><span>UPI ID</span><b id="upiId"></b><button type="button" class="copy" onclick="copyText(CFG.upi)">Copy</button></div></div></div></div>
+        <div class="pay" id="pay-card">
+          <div class="creditcard"><div>💳 <b>MediHope Pay</b></div><div class="num" id="pvNum">•••• •••• •••• ••••</div><div class="row"><span id="pvName">Card Holder</span><span id="pvExp">MM/YY</span></div></div>
+          <label>Name on Card<input id="cardName" autocomplete="off" placeholder="RAHUL SHARMA"></label>
+          <label>Card Number<input id="cardNum" inputmode="numeric" autocomplete="off" maxlength="19" placeholder="4111 1111 1111 1111"></label>
+          <div class="row2"><label>Expiry<input id="cardExp" inputmode="numeric" maxlength="5" placeholder="MM/YY"></label><label>CVV<input id="cardCvv" type="password" inputmode="numeric" maxlength="4" placeholder="•••"></label></div>
+          <div class="small muted">🔒 Demo: card is checked in your browser only; just the last 4 digits are kept.</div>
+        </div>
+        <div class="pay" id="pay-bank">
+          <div class="card" style="padding:8px 18px;background:#fff">
+            <div class="kv"><span>Account Name</span><b id="bkName"></b></div><div class="kv"><span>Bank</span><b id="bkBank"></b></div>
+            <div class="kv"><span>Account No.</span><b id="bkAcc"></b><button type="button" class="copy" onclick="copyText(CFG.acc)">Copy</button></div>
+            <div class="kv"><span>IFSC</span><b id="bkIfsc"></b><button type="button" class="copy" onclick="copyText(CFG.ifsc)">Copy</button></div>
+            <div class="kv"><span>Branch</span><b id="bkBranch"></b></div>
+          </div>
+          <label>UTR / Reference No. (after transfer)<input id="bankRef" placeholder="e.g. 412345678901"></label>
+        </div>
+        <label>Message (optional)<textarea id="donMessage" rows="2" placeholder="Best wishes..."></textarea></label>
+        <div class="alert">Academic project: payment details are sample placeholders and no real money is processed.</div>
+        <button class="btn secondary" type="button" onclick="submitDonation()">Complete Donation</button>
+      </form>
+    </div>
+    <div class="card">
+      <h2>Donation Process</h2>
+      <div style="line-height:2;color:#475569"><p>① Select a campaign</p><p>② Enter an amount (minimum ₹2,000)</p><p>③ Choose a payment method</p><p>④ Donation is validated</p><p>⑤ Transaction ID is created</p><p>⑥ Download your PDF receipt</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DONOR: my donations -->
+<section id="mydonations" class="page">
+  <div class="section-title"><h2>My Donations</h2><div class="small muted" id="myTotal"></div></div>
+  <div class="card table-wrap"><table><thead><tr><th>Receipt No.</th><th>Campaign</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th><th>Receipt</th></tr></thead><tbody id="myBody"></tbody></table></div>
+</section>
+
+<!-- ADMIN: transactions -->
+<section id="transactions" class="page">
+  <div class="section-title"><h2>Transaction Management</h2>
+    <div class="actions"><button class="btn primary" onclick="exportXLSX('tx')">⬇ Export Excel</button>
+    <label class="btn light" style="cursor:pointer;margin:0">⬆ Import Excel<input type="file" accept=".xlsx,.xls,.csv" class="hidden" onchange="importXLSX(this.files[0],'tx');this.value=''"></label></div></div>
+  <div class="search"><input id="txSearch" placeholder="Search donor, email, ID, campaign..." oninput="renderTransactions()"><select id="txStatus" onchange="renderTransactions()"><option value="">All status</option><option>Completed</option><option>Cancelled</option></select></div>
+  <div class="card table-wrap"><table><thead><tr><th>Transaction ID</th><th>Donor</th><th>Campaign</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="transactionBody"></tbody></table></div>
+</section>
+
+<!-- ADMIN: donors -->
+<section id="donors" class="page">
+  <div class="section-title"><h2>Registered Donors</h2></div>
+  <div class="card table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Donations</th><th>Total Donated</th></tr></thead><tbody id="donorBody"></tbody></table></div>
+</section>
+
+<!-- CAMPAIGN USER: my campaigns -->
+<section id="mycampaigns" class="page">
+  <div class="section-title"><h2>My Campaigns</h2><div class="actions"><button class="btn primary" onclick="openCampaignModal()">+ Submit New Campaign</button></div></div>
+  <div class="alert" style="margin-bottom:16px">Every campaign is reviewed by our admin team (patient verification) before it becomes visible to donors. You can edit and resubmit while it is pending or rejected.</div>
+  <div id="myCampGrid" class="grid vgrid"></div>
+</section>
+
+<!-- ADMIN: patient verification -->
+<section id="verification" class="page">
+  <div class="section-title"><h2>Patient Verification</h2><span class="tag">ADMIN ONLY</span></div>
+  <div class="grid three" style="margin-bottom:18px">
+    <div class="card metric"><div class="label">Pending Review</div><div class="value" id="vPending">0</div><div class="trend">Waiting for verification</div></div>
+    <div class="card metric"><div class="label">Verified</div><div class="value" id="vVerified">0</div><div class="trend">Live for donors</div></div>
+    <div class="card metric"><div class="label">Rejected</div><div class="value" id="vRejected">0</div><div class="trend">Sent back to applicant</div></div>
+  </div>
+  <div class="search"><input id="vSearch" placeholder="Search patient, applicant, phone, hospital..." oninput="renderVerification()"><select id="vFilter" onchange="renderVerification()"><option value="Pending" selected>Pending</option><option value="Verified">Verified</option><option value="Rejected">Rejected</option><option value="">All</option></select></div>
+  <div id="verifyList" class="grid vgrid"></div>
+</section>
+
+<!-- BOTH: cleared medical bills -->
+<section id="bills" class="page">
+  <div class="section-title"><h2>Medical Bills Cleared</h2>
+    <div class="actions admin-only">
+      <button class="btn primary" onclick="openBillModal()">+ Record Cleared Bill</button>
+      <button class="btn light" onclick="exportXLSX('bills')">⬇ Export Excel</button>
+      <label class="btn light" style="cursor:pointer;margin:0">⬆ Import Excel<input type="file" accept=".xlsx,.xls,.csv" class="hidden" onchange="importXLSX(this.files[0],'bills');this.value=''"></label>
+    </div></div>
+  <p class="muted" style="margin-top:-6px">Full transparency: every hospital bill settled using the funds raised from our donors.</p>
+  <div class="grid cards">
+    <div class="card metric"><div class="label">Total Funds Raised</div><div class="value" id="bRaised">₹0</div><div class="trend">From completed donations</div></div>
+    <div class="card metric"><div class="label">Medical Bills Cleared</div><div class="value" id="bCleared">₹0</div><div class="trend">Paid directly to hospitals</div></div>
+    <div class="card metric"><div class="label">Bills Settled</div><div class="value" id="bCount">0</div><div class="trend">Patients helped: <span id="bPatients">0</span></div></div>
+    <div class="card metric"><div class="label">Funds Available</div><div class="value" id="bBalance">₹0</div><div class="trend">Raised minus cleared</div></div>
+  </div>
+  <div class="card table-wrap" style="margin-bottom:18px"><div class="section-title" style="margin:16px 16px 4px"><h2 style="font-size:17px">Fund Utilisation by Campaign</h2></div><div id="utilTable"></div></div>
+  <div class="search"><input id="billSearch" placeholder="Search patient, hospital, bill no, campaign..." oninput="renderBills()"><select id="billCampFilter" onchange="renderBills()"><option value="">All campaigns</option></select></div>
+  <div class="card table-wrap"><table><thead><tr><th>Bill ID</th><th>Patient</th><th>Hospital</th><th>Campaign</th><th>Bill No.</th><th>Description</th><th>Amount Cleared</th><th>Cleared On</th><th>Paid Via</th><th>Status</th><th>Proof</th><th class="admin-only">Actions</th></tr></thead><tbody id="billBody"></tbody></table></div>
+</section>
+
+<!-- ADMIN: new / edit campaign -->
+<section id="newcampaign" class="page">
+  <div class="section-title"><h2 id="cmTitle">Create New Campaign</h2>
+    <div class="actions"><button class="btn light" type="button" onclick="closeModal()">← Back</button></div></div>
+  <div class="card" style="max-width:820px">
+    <p class="muted" style="margin-top:0">Fill in the patient, hospital and payment details. Fields marked required must be completed before saving.</p>
+    <form id="campaignForm" onsubmit="return false">
+    <input type="hidden" id="cId">
+    <label>Patient / Campaign Name<input id="cName" required placeholder="e.g. Help Aarav's Surgery"></label>
+    <label>Category<select id="cCategory"><option>Emergency</option><option>Surgery</option><option>Treatment</option><option>Child Care</option></select></label>
+    <label>Target Amount (₹)<input id="cTarget" type="number" min="1" required placeholder="100000"></label>
+    <label>Patient Location<input id="cLocation" required placeholder="Bhubaneswar, Odisha"></label>
+    <div class="row2"><label>Medical / Hospital Name<input id="cMedical" required placeholder="e.g. AIIMS Bhubaneswar"></label>
+    <label>Medical Location<input id="cMedLoc" required placeholder="e.g. Sijua, Bhubaneswar"></label></div>
+    <div class="row2"><label>Patient Age<input id="cAge" type="number" min="0" max="120" required placeholder="e.g. 8"></label>
+    <label>Gender<select id="cGender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></label></div>
+    <label>Contact Phone Number<input id="cPhone" type="tel" required pattern="[+]?[0-9 ]{10,15}" placeholder="e.g. 9876543210"></label>
+    <label>Patient Photo (optional · image, auto-resized)<input id="cPhoto" type="file" accept="image/*" onchange="readCampPhoto(this)"></label>
+    <div class="small muted" id="cPhotoInfo"></div>
+    <label>Attach Medical Documents (optional · image or PDF, max 800 KB)<input id="cFile" type="file" accept="image/*,.pdf" onchange="readCampFile(this)"></label>
+    <div class="small muted" id="cFileInfo"></div>
+    <div style="border:1.5px solid #c7d2fe;background:#f5f7ff;border-radius:16px;padding:16px;display:grid;gap:12px">
+      <div><b>🏦 Medical Payment Details</b><div class="small muted">Hospital / medical account where the bill is paid. Optional. Donors only see a masked account number.</div></div>
+      <div class="row2"><label>Account Holder / Payee<input id="cPayName" placeholder="e.g. AIIMS Bhubaneswar"></label>
+      <label>Bank Name<input id="cPayBank" placeholder="e.g. State Bank of India"></label></div>
+      <div class="row2"><label>Account Number<input id="cPayAcc" inputmode="numeric" pattern="[0-9]{6,20}" placeholder="e.g. 00000012345678"></label>
+      <label>IFSC Code<input id="cPayIfsc" pattern="[A-Za-z]{4}0[A-Za-z0-9]{6}" maxlength="11" placeholder="e.g. SBIN0000001" style="text-transform:uppercase"></label></div>
+      <label>UPI ID (optional)<input id="cPayUpi" placeholder="e.g. hospital@upi"></label>
+    </div>
+    <label>Short Description<textarea id="cDesc" required rows="3"></textarea></label>
+    <button type="button" class="btn primary" onclick="submitCampaign()">Save Campaign</button>
+  </form>
+  </div>
+</section>
+
+<!-- ADMIN: settings / excel -->
+<section id="admin" class="page">
+  <div class="section-title"><h2>Excel Center &amp; Settings</h2><span class="tag">ADMIN ONLY</span></div>
+  <div class="grid three">
+    <div class="card"><b>Download full workbook</b><p class="muted">One .xlsx file with Campaigns, Transactions, Donors and Cleared Bills sheets.</p><button class="btn primary" onclick="exportXLSX('all')">⬇ Download Excel</button></div>
+    <div class="card"><b>Upload Excel</b><p class="muted">Upload an edited workbook. Rows are matched by ID (<code>Campaign ID</code> / <code>Transaction ID</code>); new IDs are added, existing ones are updated. Totals are recalculated automatically.</p>
+      <label class="btn secondary" style="cursor:pointer;margin:0;display:inline-block">⬆ Upload Workbook<input type="file" accept=".xlsx,.xls" class="hidden" onchange="importXLSX(this.files[0],'all');this.value=''"></label></div>
+    <div class="card"><b>Reset demo data</b><p class="muted">Removes all campaigns, transactions, cleared bills and donor accounts (admin account is kept).</p><button class="btn danger" onclick="resetDemo()">Reset Demo</button></div>
+  </div>
+  <div class="card" style="margin-top:18px;max-width:520px">
+    <h3>Change admin password</h3>
+    <form onsubmit="changeAdminPass(event)">
+      <label>Current password<input id="cpOld" type="password" required></label>
+      <label>New password (min 6)<input id="cpNew" type="password" minlength="6" required></label>
+      <button class="btn primary" type="submit">Update Password</button>
+    </form>
+  </div>
+  <div class="card" style="margin-top:18px"><h3>Note for deployment</h3>
+    <p class="muted">This prototype stores everything in the browser (localStorage), so each browser has its own data. For real use, move login, campaigns and transactions to a server (e.g. Node.js + a database) with proper authentication and a certified payment gateway.</p></div>
+</section>
+</main>
+<footer><b>MediHope</b> — Medical Campaign Fund Raising Management System<br><span class="small">Academic demonstration project • Demo payments only</span></footer>
+</div>
+
+<!-- MODALS -->
+<div id="billModal" class="modal"><div class="modal-box">
+  <div class="modal-head"><h2 id="bmTitle">Record Cleared Medical Bill</h2><button class="close" onclick="closeBillModal()">✕</button></div>
+  <form id="billForm" onsubmit="return false">
+    <input type="hidden" id="bId">
+    <label>Campaign<select id="bCampaign" required onchange="fillBillHospital()"></select></label>
+    <div class="row2"><label>Patient Name<input id="bPatient" required placeholder="e.g. Aarav Das"></label>
+    <label>Hospital<input id="bHospital" required placeholder="e.g. AIIMS Bhubaneswar"></label></div>
+    <div class="row2"><label>Hospital Bill No.<input id="bBillNo" required placeholder="e.g. INV-2025-0412"></label>
+    <label>Amount Cleared (₹)<input id="bAmount" type="number" min="1" required placeholder="45000"></label></div>
+    <div class="row2"><label>Date Cleared<input id="bDate" type="date" required></label>
+    <label>Paid Via<select id="bMode"><option>Bank Transfer</option><option>UPI</option><option>Cheque</option><option>Cash / Counter Payment</option></select></label></div>
+    <label>Payment Reference / UTR (optional)<input id="bRef" placeholder="e.g. 412345678901"></label>
+    <label>What was paid for<textarea id="bDesc" required rows="2" placeholder="Heart surgery, ICU stay and medicines"></textarea></label>
+    <label>Bill / payment proof (optional · image or PDF, max 800 KB)<input id="bProof" type="file" accept="image/*,.pdf" onchange="readBillProof(this)"></label>
+    <div class="small muted" id="bProofInfo"></div>
+    <button type="button" class="btn primary" onclick="submitBill()">Save Bill</button>
+  </form>
+</div></div>
+<div id="detailModal" class="modal"><div class="modal-box" style="max-width:760px"><div class="modal-head"><h2>Campaign Details</h2><button class="close" onclick="$('detailModal').classList.remove('show')">✕</button></div><div id="detailBox" style="margin-top:14px"></div></div></div>
+<div id="proofModal" class="modal"><div class="modal-box"><div class="modal-head"><h2 id="proofTitle">Bill Proof</h2><button class="close" onclick="$('proofModal').classList.remove('show')">✕</button></div><div id="proofBox" style="margin-top:14px"></div></div></div>
+<div id="receiptModal" class="modal"><div class="modal-box" id="receiptBox"></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const seedCampaigns=[
+ {id:"CAMP-001",name:"Help Aarav's Heart Surgery",category:"Surgery",target:150000,raised:0,location:"Bhubaneswar, Odisha",medical:"AIIMS Bhubaneswar",medicalLocation:"Sijua, Bhubaneswar",icon:"❤",desc:"Support a family with urgent medical surgery expenses.",status:"Active"},
+ {id:"CAMP-002",name:"Emergency Cancer Treatment",category:"Treatment",target:250000,raised:0,location:"Cuttack, Odisha",medical:"SCB Medical College & Hospital",medicalLocation:"Cuttack, Odisha",icon:"✚",desc:"Fund essential treatment and hospital care.",status:"Active"},
+ {id:"CAMP-003",name:"Child Care & Recovery",category:"Child Care",target:100000,raised:0,location:"Puri, Odisha",medical:"District Headquarters Hospital",medicalLocation:"Puri, Odisha",icon:"★",desc:"Help cover treatment, medicines and recovery support.",status:"Active"}
+];
+const MIN_DONATION=2000;
+const CFG={upi:"medihope@upi",name:"MediHope Foundation",bank:"State Bank of India",acc:"00000012345678",ifsc:"SBIN0000001",branch:"Bhubaneswar Main Branch"};
+
+/* ---------- safe storage ---------- */
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){}}
+function load(k,f){try{const v=JSON.parse(store(k)||"null");return v==null?f:v}catch(e){return f}}
+function sget(k){try{return sessionStorage.getItem(k)}catch(e){return window["_s_"+k]||null}}
+function sset(k,v){try{v==null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){window["_s_"+k]=v}}
+async function sha(s){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("mh:"+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){let h=5381;for(const c of "mh:"+s)h=((h<<5)+h+c.charCodeAt(0))>>>0;return"f"+h}}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function money(n){return"₹"+Number(n||0).toLocaleString("en-IN")}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2600)}
+function copyText(t){navigator.clipboard?.writeText(t);toast("Copied: "+t)}
+
+/* ---------- data ---------- */
+let campaigns=load("mh_campaigns",null)||JSON.parse(JSON.stringify(seedCampaigns));
+let transactions=load("mh_transactions",[]);
+let users=load("mh_users",[]);
+let bills=load("mh_bills",[]);
+let me=null;
+function save(){store("mh_campaigns",JSON.stringify(campaigns));store("mh_transactions",JSON.stringify(transactions));store("mh_users",JSON.stringify(users));store("mh_bills",JSON.stringify(bills))}
+function recalc(){campaigns.forEach(c=>{c.raised=transactions.filter(t=>t.campaignId===c.id&&t.status==="Completed").reduce((a,t)=>a+Number(t.amount||0),0);c.status=c.status||"Active";c.icon=c.icon||"❤"})}
+
+/* ---------- auth ---------- */
+async function ensureAdmin(){if(!users.find(u=>u.role==="admin")){users.push({id:"ADMIN",name:"Administrator",email:"admin",role:"admin",hash:await sha("admin123"),created:Date.now()});save()}}
+const AUTH_FORMS={donor:"fDonor",signup:"fSignup",kLogin:"fCampLogin",kSignup:"fCampSignup",admin:"fAdmin"},
+  AUTH_TITLES={donor:"Welcome back",signup:"Create donor account",kLogin:"Campaign login",kSignup:"Create campaign account",admin:"Admin sign in"};
+document.querySelectorAll("#authTabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("#authTabs button").forEach(x=>x.classList.toggle("on",x===b));
+  const t=b.dataset.t;Object.entries(AUTH_FORMS).forEach(([k,f])=>$(f).classList.toggle("hidden",k!==t));
+  $("authTitle").textContent=AUTH_TITLES[t];$("authMsg").textContent=""});
+async function doLogin(e,role){
+  e.preventDefault();$("authMsg").textContent="";
+  const F={admin:["aUser","aPass"],donor:["dEmail","dPass"],campaign:["kEmail","kPass"]}[role],id=$(F[0]).value.trim().toLowerCase(),pw=$(F[1]).value;
+  const u=users.find(x=>x.role===role&&x.email.toLowerCase()===id);
+  if(!u||u.hash!==await sha(pw)){$("authMsg").textContent="Invalid "+(role==="admin"?"username":"email")+" or password.";return}
+  sset("mh_session",JSON.stringify({id:u.id,role:u.role,name:u.name,email:u.email}));
+  e.target.reset();startApp()}
+async function doSignup(e){
+  e.preventDefault();$("authMsg").textContent="";
+  const name=$("sName").value.trim(),email=$("sEmail").value.trim().toLowerCase(),p=$("sPass").value;
+  if(p!==$("sPass2").value){$("authMsg").textContent="Passwords do not match.";return}
+  if(users.some(u=>u.email.toLowerCase()===email)){$("authMsg").textContent="This email is already registered.";return}
+  const u={id:"USR-"+Date.now().toString().slice(-8),name,email,role:"donor",hash:await sha(p),created:Date.now()};
+  users.push(u);save();sset("mh_session",JSON.stringify({id:u.id,role:"donor",name,email}));e.target.reset();startApp();toast("Account created. Welcome, "+name+"!")}
+async function doCampSignup(e){
+  e.preventDefault();$("authMsg").textContent="";
+  const name=$("ksName").value.trim(),email=$("ksEmail").value.trim().toLowerCase(),phone=$("ksPhone").value.trim(),p=$("ksPass").value;
+  if(p!==$("ksPass2").value){$("authMsg").textContent="Passwords do not match.";return}
+  if(users.some(u=>u.email.toLowerCase()===email)){$("authMsg").textContent="This email is already registered.";return}
+  const u={id:"CMP-"+Date.now().toString().slice(-8),name,email,phone,role:"campaign",hash:await sha(p),created:Date.now()};
+  users.push(u);save();sset("mh_session",JSON.stringify({id:u.id,role:"campaign",name,email}));e.target.reset();startApp();toast("Campaign account created. Welcome, "+name+"!")}
+function logout(){sset("mh_session",null);me=null;$("app").classList.add("hidden");$("auth").classList.remove("hidden")}
+async function changeAdminPass(e){
+  e.preventDefault();const a=users.find(u=>u.role==="admin");
+  if(a.hash!==await sha($("cpOld").value))return toast("Current password is wrong.");
+  a.hash=await sha($("cpNew").value);save();e.target.reset();toast("Admin password updated.")}
+
+/* ---------- app shell ---------- */
+const HIDDEN_PAGES={campaign:["newcampaign"]};
+const NAV={admin:[["dashboard","Dashboard"],["campaigns","Campaigns"],["newcampaign","New Campaign"],["transactions","Transactions"],["verification","Patient Verification"],["bills","Cleared Bills"],["donors","Donors"],["admin","Excel & Settings"]],
+           donor:[["campaigns","Campaigns"],["donate","Donate"],["mydonations","My Donations"],["bills","Cleared Bills"]],
+           campaign:[["mycampaigns","My Campaigns"],["campaigns","Campaigns"],["bills","Cleared Bills"]]};
+function startApp(){
+  try{me=JSON.parse(sget("mh_session")||"null")}catch(e){me=null}
+  if(!me){$("auth").classList.remove("hidden");$("app").classList.add("hidden");return}
+  recalc();
+  $("auth").classList.add("hidden");$("app").classList.remove("hidden");
+  $("whoName").textContent=me.name;$("whoRole").textContent=me.role;$("whoRole").className="badge "+(me.role==="admin"?"admin":"");
+  $("mainNav").innerHTML=NAV[me.role].map(n=>`<button data-page="${n[0]}">${n[1]}</button>`).join("");
+  document.querySelectorAll("#mainNav button").forEach(b=>b.onclick=()=>b.dataset.page==="newcampaign"?openCampaignModal():showPage(b.dataset.page));
+  document.querySelectorAll(".admin-only").forEach(el=>el.classList.toggle("hidden",me.role!=="admin"));
+  $("campTitle").textContent=me.role==="admin"?"Campaign Management":"Medical Campaigns";
+  $("donorName").value=me.role==="donor"?me.name:"";$("donorEmail").value=me.role==="donor"?me.email:"";
+  showPage(NAV[me.role][0][0])}
+function showPage(id){
+  if(!me||!(NAV[me.role].some(n=>n[0]===id)||(HIDDEN_PAGES[me.role]||[]).includes(id)))return;
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");
+  document.querySelectorAll("#mainNav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+  recalc();
+  if(id==="dashboard")updateDashboard();if(id==="campaigns")renderCampaigns();if(id==="donate")populateDonationSelect();
+  if(id==="transactions")renderTransactions();if(id==="donors")renderDonors();if(id==="mydonations")renderMine();if(id==="bills")renderBills();if(id==="mycampaigns")renderMyCampaigns();if(id==="verification")renderVerification();updateNavBadge();
+  window.scrollTo({top:0,behavior:"smooth"})}
+
+/* ---------- admin dashboard ---------- */
+function updateDashboard(){
+  const done=transactions.filter(t=>t.status==="Completed"),raised=done.reduce((a,t)=>a+Number(t.amount),0);
+  $("heroRaised").textContent=money(raised);$("mRaised").textContent=money(raised);
+  $("mCampaigns").textContent=campaigns.filter(c=>c.status==="Active"&&isVerified(c)).length;
+  $("mDonors").textContent=users.filter(u=>u.role==="donor").length;$("mDonations").textContent=done.length;
+  const days=[...Array(7)].map((_,i)=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-(6-i));return d}),
+        vals=days.map(d=>{const n=new Date(d);n.setDate(n.getDate()+1);return done.filter(t=>t.ts>=d.getTime()&&t.ts<n.getTime()).reduce((a,t)=>a+Number(t.amount),0)}),
+        mx=Math.max(...vals,1);
+  $("chart").innerHTML=vals.map((v,i)=>`<div class="bar" title="${money(v)}" style="height:${Math.max(6,v/mx*170)}px"><span>${days[i].toLocaleDateString("en-IN",{weekday:"short"})}</span></div>`).join("");
+  const top=[...campaigns].sort((a,b)=>b.raised-a.raised).slice(0,4);
+  $("topCamps").innerHTML=top.map(c=>{const p=Math.min(100,Math.round(c.raised/c.target*100));return`<div style="margin-bottom:14px"><b style="font-size:14px">${esc(c.name)}</b><div class="progress" style="margin:6px 0"><i style="width:${p}%"></i></div><div class="amounts"><b>${money(c.raised)}</b><span class="muted">${p}% of ${money(c.target)}</span></div></div>`}).join("")||'<p class="muted">No campaigns yet.</p>'}
+
+/* ---------- campaigns ---------- */
+function renderCampaigns(){
+  const q=($("campaignSearch")?.value||"").toLowerCase(),cat=$("categoryFilter")?.value||"";
+  const list=campaigns.filter(c=>(!q||c.name.toLowerCase().includes(q))&&(!cat||c.category===cat)&&(me?.role==="admin"||isVerified(c)));
+  const admin=me?.role==="admin";
+  $("campaignGrid").classList.toggle("hidden",admin);$("campaignTable").classList.toggle("hidden",!admin);
+  if(admin){
+    $("campaignTable").innerHTML=`<table><thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Patient Location</th><th>Medical / Hospital</th><th>Medical Location</th><th>Target</th><th>Raised</th><th>Progress</th><th>Status</th><th>Actions</th></tr></thead><tbody>${list.map(c=>{const p=Math.min(100,Math.round(c.raised/c.target*100));
+      return`<tr><td>${esc(c.id)}</td><td><div style="display:flex;align-items:center;gap:10px">${c.photo?`<img src="${c.photo}" alt="" style="width:38px;height:38px;border-radius:50%;object-fit:cover">`:""}<div><b>${esc(c.name)}</b><br><span class="small muted">${c.age!=null&&c.age!==""?esc(c.age)+" yrs":""}${c.gender?" · "+esc(c.gender):""}${c.phone?" · 📞 "+esc(c.phone):""}</span>${c.file?`<br><a href="#" class="small" onclick="viewCampDoc('${esc(c.id)}');return false">📎 Documents</a>`:""}${hasPay(c)?`<br><a href="#" class="small" onclick="viewPay('${esc(c.id)}');return false">🏦 Payment details</a>`:""}</div></div></td><td>${esc(c.category)}</td><td>${esc(c.location)}</td><td>${esc(c.medical||"—")}</td><td>${esc(c.medicalLocation||"—")}</td><td>${money(c.target)}</td><td><b>${money(c.raised)}</b></td><td>${p}%</td><td><span class="status ${c.status==="Active"?"active-s":"closed-s"}">${esc(c.status)}</span><br>${verBadge(c)}</td>
+      <td><button class="btn light sm" onclick="viewCampaignDetails('${esc(c.id)}')">👁 Details</button> ${verState(c)!=="Verified"?`<button class="btn secondary sm" onclick="setVerify('${esc(c.id)}','Verified')">✔ Approve</button>`:'<span class="status verified-s">✔ Approved</span>'} <button class="btn light sm" onclick="openCampaignModal('${esc(c.id)}')">Edit</button> <button class="btn light sm" onclick="toggleCampaign('${esc(c.id)}')">${c.status==="Active"?"Close":"Reopen"}</button> <button class="btn danger sm" onclick="deleteCampaign('${esc(c.id)}')">Delete</button></td></tr>`}).join("")||'<tr><td colspan="11" class="muted">No campaigns found.</td></tr>'}</tbody></table>`;
+    return}
+  $("campaignGrid").innerHTML=list.map(c=>{const p=Math.min(100,Math.round(c.raised/c.target*100)),open=c.status==="Active";
+    return`<div class="card campaign"><div class="cover">${c.photo?`<img src="${c.photo}" alt="${esc(c.name)}">`:esc(c.icon)}</div><div class="campaign-body"><span class="tag">${esc(c.category)}</span> ${open?"":'<span class="status closed-s">Closed</span>'}<h3>${esc(c.name)}</h3><p class="muted">${esc(c.desc)}</p>${c.age!=null&&c.age!==""?`<p class="small muted">👤 ${esc(c.age)} yrs${c.gender?" · "+esc(c.gender):""}</p>`:""}<p class="small muted">📍 ${esc(c.location)}</p>${c.medical?`<p class="small muted">🏥 <b>${esc(c.medical)}</b>${c.medicalLocation?" · "+esc(c.medicalLocation):""}</p>`:""}${c.file?`<p class="small"><a href="#" onclick="viewCampDoc('${esc(c.id)}');return false">📎 View medical documents</a></p>`:""}${hasPay(c)?`<p class="small"><a href="#" onclick="viewPay('${esc(c.id)}');return false">🏦 Medical payment details</a></p>`:""}<div class="progress"><i style="width:${p}%"></i></div><div class="amounts"><b>${money(c.raised)}</b><span class="muted">of ${money(c.target)} · ${p}%</span></div>${me?.role==="donor"?`<button class="btn secondary" style="width:100%;margin-top:14px" ${open?"":"disabled"} onclick="startDonation('${esc(c.id)}')">${open?"Donate to this campaign":"Campaign closed"}</button>`:""}</div></div>`}).join("")||'<div class="card"><p>No campaign found.</p></div>'}
+function openCampaignModal(id){
+  const c=id?campaigns.find(x=>x.id===id):null;
+  $("cmTitle").textContent=me?.role==="campaign"?(c?"Edit & Resubmit Campaign":"Submit Campaign for Verification"):c?"Edit Campaign":"Create New Campaign";$("cId").value=c?c.id:"";
+  $("cName").value=c?.name||"";$("cCategory").value=c?.category||"Emergency";$("cTarget").value=c?.target||"";$("cLocation").value=c?.location||"";$("cMedical").value=c?.medical||"";$("cMedLoc").value=c?.medicalLocation||"";$("cAge").value=c?.age??"";$("cGender").value=c?.gender||"";$("cPhone").value=c?.phone||(me?.role==="campaign"&&!c?(users.find(u=>u.id===me.id)?.phone||""):"");
+  campPhoto=c?.photo||"";campFile=c?.file||"";campFileName=c?.fileName||"";$("cPhoto").value="";$("cFile").value="";showCampPhotoInfo();showCampFileInfo();$("cPayName").value=c?.payName||"";$("cPayBank").value=c?.payBank||"";$("cPayAcc").value=c?.payAcc||"";$("cPayIfsc").value=c?.payIfsc||"";$("cPayUpi").value=c?.payUpi||"";$("cDesc").value=c?.desc||"";
+  showPage("newcampaign")}
+function closeModal(){showPage(me?.role==="campaign"?"mycampaigns":"campaigns")}
+function submitCampaign(){
+  const role=me?.role;if(role!=="admin"&&role!=="campaign")return;
+  if(!$("campaignForm").reportValidity())return;
+  const id=$("cId").value,data={name:$("cName").value.trim(),category:$("cCategory").value,target:Number($("cTarget").value),location:$("cLocation").value.trim(),medical:$("cMedical").value.trim(),medicalLocation:$("cMedLoc").value.trim(),age:Number($("cAge").value),gender:$("cGender").value,phone:$("cPhone").value.trim(),photo:campPhoto,file:campFile,fileName:campFileName,payName:$("cPayName").value.trim(),payBank:$("cPayBank").value.trim(),payAcc:$("cPayAcc").value.trim(),payIfsc:$("cPayIfsc").value.trim().toUpperCase(),payUpi:$("cPayUpi").value.trim(),desc:$("cDesc").value.trim()};
+  if(id){
+    const c=campaigns.find(x=>x.id===id);if(!c)return;
+    if(role==="campaign"){if(c.ownerId!==me.id||isVerified(c))return toast("This campaign can no longer be edited.");data.verify="Pending";data.rejectReason=""}
+    Object.assign(c,data);transactions.forEach(t=>{if(t.campaignId===id)t.campaign=data.name})
+  }else{
+    let n=campaigns.length+1,nid;do{nid="CAMP-"+String(n++).padStart(3,"0")}while(campaigns.some(c=>c.id===nid));
+    campaigns.push({id:nid,raised:0,icon:"❤",status:"Active",...data,...(role==="campaign"?{ownerId:me.id,ownerName:me.name,ownerEmail:me.email,verify:"Pending",submittedAt:Date.now()}:{verify:"Verified"})})}
+  recalc();save();closeModal();renderCampaigns();
+  if(role==="campaign"){renderMyCampaigns();toast("Submitted for admin verification.")}else toast("Campaign saved.")}
+function toggleCampaign(id){const c=campaigns.find(x=>x.id===id);c.status=c.status==="Active"?"Closed":"Active";save();renderCampaigns()}
+function deleteCampaign(id){if(!confirm("Delete this campaign? Its past transactions stay in the records."))return;campaigns=campaigns.filter(c=>c.id!==id);save();renderCampaigns()}
+
+/* ---------- donate (donor) ---------- */
+let payMethod="upi",qr=null;
+function updateQR(){const amt=Number($("donAmount").value)||0,url=`upi://pay?pa=${CFG.upi}&pn=${encodeURIComponent(CFG.name)}&cu=INR${amt?"&am="+amt:""}&tn=MediHope%20Donation`,el=$("qr");if(!el)return;if(typeof QRCode==="undefined"){el.innerHTML='<p class="small muted">QR needs internet to load.</p>';return}if(!qr)qr=new QRCode(el,{text:url,width:160,height:160,correctLevel:QRCode.CorrectLevel.M});else qr.makeCode(url)}
+function setAmt(n){$("donAmount").value=n;updateQR()}
+function initPay(){$("upiId").textContent=CFG.upi;$("bkName").textContent=CFG.name;$("bkBank").textContent=CFG.bank;$("bkAcc").textContent=CFG.acc;$("bkIfsc").textContent=CFG.ifsc;$("bkBranch").textContent=CFG.branch;
+  document.querySelectorAll("#payTabs button").forEach(b=>b.onclick=()=>{payMethod=b.dataset.m;document.querySelectorAll("#payTabs button").forEach(x=>x.classList.toggle("on",x===b));document.querySelectorAll(".pay").forEach(p=>p.classList.toggle("on",p.id==="pay-"+payMethod))});
+  $("cardNum").oninput=e=>{e.target.value=e.target.value.replace(/\D/g,"").slice(0,16).replace(/(.{4})/g,"$1 ").trim();$("pvNum").textContent=e.target.value||"•••• •••• •••• ••••"};
+  $("cardExp").oninput=e=>{let v=e.target.value.replace(/\D/g,"").slice(0,4);if(v.length>2)v=v.slice(0,2)+"/"+v.slice(2);e.target.value=v;$("pvExp").textContent=v||"MM/YY"};
+  $("cardName").oninput=e=>$("pvName").textContent=e.target.value||"Card Holder"}
+function luhn(n){let s=0,d=false;for(let i=n.length-1;i>=0;i--){let x=+n[i];if(d){x*=2;if(x>9)x-=9}s+=x;d=!d}return s%10===0}
+function populateDonationSelect(){$("donCampaign").innerHTML=campaigns.filter(c=>c.status==="Active"&&isVerified(c)).map(c=>`<option value="${esc(c.id)}">${esc(c.name)} — ${money(c.raised)} raised</option>`).join("")||'<option value="">No active campaigns</option>'}
+function startDonation(id){showPage("donate");setTimeout(()=>$("donCampaign").value=id,50)}
+function submitDonation(){
+  if(me?.role!=="donor")return;
+  const form=$("donationForm");if(!form.reportValidity())return;
+  const c=campaigns.find(x=>x.id===$("donCampaign").value),amount=Number($("donAmount").value);
+  if(!c||c.status!=="Active"||!isVerified(c))return toast("Please choose an active, verified campaign.");
+  if(!(amount>=MIN_DONATION))return toast("Minimum donation amount is "+money(MIN_DONATION)+".");
+  let method="UPI / QR";
+  if(payMethod==="card"){const n=$("cardNum").value.replace(/\s/g,""),[m,y]=$("cardExp").value.split("/").map(Number),now=new Date();
+    if(!$("cardName").value.trim())return toast("Enter the name on the card.");
+    if(n.length<13||!luhn(n))return toast("Card number looks invalid.");
+    if(!m||m<1||m>12||!y||(2000+y)*12+m<now.getFullYear()*12+now.getMonth()+1)return toast("Card expiry is invalid or expired.");
+    if(!/^\d{3,4}$/.test($("cardCvv").value))return toast("Enter a valid CVV.");
+    method="Card •••• "+n.slice(-4)}
+  if(payMethod==="bank"){if($("bankRef").value.trim().length<6)return toast("Enter the UTR / reference number.");method="Bank Transfer ("+$("bankRef").value.trim()+")"}
+  const now=new Date(),tx={id:"TXN-"+Date.now().toString().slice(-8),userId:me.id,donor:$("donorName").value.trim(),email:me.email,campaignId:c.id,campaign:c.name,amount,method,ts:now.getTime(),date:now.toLocaleString("en-IN"),status:"Completed",message:$("donMessage").value.trim()};
+  transactions.unshift(tx);recalc();save();
+  form.reset();$("donorName").value=me.name;$("donorEmail").value=me.email;$("cardCvv").value="";$("pvNum").textContent="•••• •••• •••• ••••";$("pvName").textContent="Card Holder";$("pvExp").textContent="MM/YY";updateQR();populateDonationSelect();
+  $("receiptBox").innerHTML=`<div style="text-align:center"><div style="font-size:54px">✅</div><h2>Thank you, ${esc(tx.donor)}!</h2><p class="muted">Your donation was successful.</p></div>
+  <div class="kv"><span>Receipt No.</span><b>${esc(tx.id)}</b></div><div class="kv"><span>Amount</span><b>${money(amount)}</b></div><div class="kv"><span>Campaign</span><b>${esc(c.name)}</b></div><div class="kv"><span>Method</span><b>${esc(method)}</b></div><div class="kv"><span>Status</span><b>Completed</b></div>
+  <button class="btn secondary" style="width:100%;margin-top:16px" onclick="pdfReceipt('${tx.id}')">⬇ Download PDF Receipt</button>
+  <button class="btn light" style="width:100%;margin-top:10px" onclick="$('receiptModal').classList.remove('show');showPage('mydonations')">View My Donations</button>`;
+  $("receiptModal").classList.add("show")}
+$("receiptModal").addEventListener("click",e=>{if(e.target.id==="receiptModal")e.target.classList.remove("show")});
+
+/* ---------- PDF receipt ---------- */
+function pdfReceipt(id){
+  const t=transactions.find(x=>x.id===id);if(!t)return toast("Transaction not found.");
+  if(me.role==="donor"&&t.email.toLowerCase()!==me.email.toLowerCase())return;
+  if(!window.jspdf)return toast("PDF library needs internet to load.");
+  const clean=s=>String(s??"").replace(/[^\x20-\x7E]/g," ").replace(/\s+/g," ").trim();
+  const {jsPDF}=window.jspdf,d=new jsPDF({unit:"mm",format:"a4"});
+  d.setFillColor(99,102,241);d.rect(0,0,210,38,"F");
+  d.setTextColor(255);d.setFont("helvetica","bold");d.setFontSize(24);d.text("MediHope",15,17);
+  d.setFont("helvetica","normal");d.setFontSize(11);d.text("Medical Campaign Fund Raising - Donation Receipt",15,26);
+  d.setFontSize(10);d.text("Receipt No: "+clean(t.id),195,17,{align:"right"});d.text(clean(t.date),195,26,{align:"right"});
+  d.setTextColor(30);d.setFont("helvetica","bold");d.setFontSize(15);d.text("Thank you for your generous donation",15,56);
+  d.setDrawColor(226,232,240);
+  const rows=[["Donor Name",t.donor],["Donor Email",t.email],["Campaign",t.campaign],["Campaign ID",t.campaignId||"-"],["Payment Method",t.method],["Transaction Status",t.status],["Date & Time",t.date]];
+  let y=68;rows.forEach(r=>{d.setFont("helvetica","normal");d.setFontSize(10);d.setTextColor(100,116,139);d.text(r[0],15,y);d.setFont("helvetica","bold");d.setTextColor(30);d.text(d.splitTextToSize(clean(r[1]),115),80,y);d.line(15,y+4,195,y+4);y+=11});
+  y+=4;d.setFillColor(238,242,255);d.roundedRect(15,y,180,26,3,3,"F");
+  d.setFont("helvetica","normal");d.setFontSize(11);d.setTextColor(67,56,202);d.text("Amount Donated",22,y+10);
+  d.setFont("helvetica","bold");d.setFontSize(20);d.text("Rs. "+Number(t.amount).toLocaleString("en-IN"),22,y+20);
+  if(t.status!=="Completed"){d.setTextColor(185,28,28);d.setFontSize(12);d.text("This transaction is marked: "+clean(t.status).toUpperCase(),15,y+38)}
+  d.setFont("helvetica","normal");d.setFontSize(9);d.setTextColor(100,116,139);
+  d.text("This is a computer-generated receipt from an academic demonstration project. No real money was processed.",15,280);
+  d.save("MediHope_Receipt_"+clean(t.id)+".pdf")}
+
+/* ---------- donor: my donations ---------- */
+function renderMine(){
+  const mine=transactions.filter(t=>t.email.toLowerCase()===me.email.toLowerCase());
+  const tot=mine.filter(t=>t.status==="Completed").reduce((a,t)=>a+Number(t.amount),0);
+  $("myTotal").innerHTML=`Total donated: <b>${money(tot)}</b>`;
+  $("myBody").innerHTML=mine.map(t=>`<tr><td>${esc(t.id)}</td><td>${esc(t.campaign)}</td><td><b>${money(t.amount)}</b></td><td>${esc(t.method)}</td><td>${esc(t.date)}</td><td><span class="status ${t.status==="Completed"?"completed":"cancelled"}">${esc(t.status)}</span></td><td><button class="btn light sm" onclick="pdfReceipt('${esc(t.id)}')">⬇ PDF</button></td></tr>`).join("")||'<tr><td colspan="7" class="muted">You have not made any donation yet.</td></tr>'}
+
+/* ---------- admin: transactions & donors ---------- */
+function renderTransactions(){
+  if(me?.role!=="admin")return;
+  const q=($("txSearch").value||"").toLowerCase(),st=$("txStatus").value;
+  const list=transactions.filter(t=>(!st||t.status===st)&&(!q||[t.id,t.donor,t.email,t.campaign].some(x=>String(x).toLowerCase().includes(q))));
+  $("transactionBody").innerHTML=list.map(t=>`<tr><td>${esc(t.id)}</td><td>${esc(t.donor)}<br><span class="small muted">${esc(t.email)}</span></td><td>${esc(t.campaign)}</td><td><b>${money(t.amount)}</b></td><td>${esc(t.method)}</td><td>${esc(t.date)}</td><td><span class="status ${t.status==="Completed"?"completed":"cancelled"}">${esc(t.status)}</span></td>
+  <td><button class="btn light sm" onclick="pdfReceipt('${esc(t.id)}')">PDF</button> <button class="btn light sm" onclick="toggleTx('${esc(t.id)}')">${t.status==="Completed"?"Cancel":"Restore"}</button> <button class="btn danger sm" onclick="deleteTx('${esc(t.id)}')">Delete</button></td></tr>`).join("")||'<tr><td colspan="8" class="muted">No transactions found.</td></tr>'}
+function toggleTx(id){const t=transactions.find(x=>x.id===id);t.status=t.status==="Completed"?"Cancelled":"Completed";recalc();save();renderTransactions()}
+function deleteTx(id){if(!confirm("Delete this transaction permanently?"))return;transactions=transactions.filter(t=>t.id!==id);recalc();save();renderTransactions()}
+function renderDonors(){
+  $("donorBody").innerHTML=users.filter(u=>u.role==="donor").map(u=>{const m=transactions.filter(t=>t.email.toLowerCase()===u.email.toLowerCase()&&t.status==="Completed");
+    return`<tr><td>${esc(u.name)}</td><td>${esc(u.email)}</td><td>${new Date(u.created).toLocaleDateString("en-IN")}</td><td>${m.length}</td><td><b>${money(m.reduce((a,t)=>a+Number(t.amount),0))}</b></td></tr>`}).join("")||'<tr><td colspan="5" class="muted">No donors registered yet.</td></tr>'}
+
+/* ---------- patient verification ---------- */
+const verState=c=>c.verify||"Verified",isVerified=c=>verState(c)==="Verified";
+function verBadge(c){const v=verState(c);return`<span class="status ${v==="Verified"?"verified-s":v==="Pending"?"pending-s":"rejected-s"}">${v==="Verified"?"✔ Verified":v==="Pending"?"⏳ Pending":"✖ Rejected"}</span>`}
+function updateNavBadge(){const b=document.querySelector('#mainNav button[data-page="verification"]');if(!b)return;const n=campaigns.filter(c=>c.ownerId&&verState(c)==="Pending").length;b.textContent="Patient Verification"+(n?` (${n})`:"")}
+function renderMyCampaigns(){
+  if(me?.role!=="campaign")return;
+  const mine=campaigns.filter(c=>c.ownerId===me.id);
+  $("myCampGrid").innerHTML=mine.map(c=>{const v=verState(c),p=c.target?Math.min(100,Math.round(c.raised/c.target*100)):0;
+    return`<div class="card"><div style="display:flex;gap:12px;align-items:center">${c.photo?`<img src="${c.photo}" alt="" style="width:56px;height:56px;border-radius:50%;object-fit:cover">`:`<div style="font-size:32px">${esc(c.icon||"❤")}</div>`}<div><b>${esc(c.name)}</b><br>${verBadge(c)}</div></div>
+    <p class="small muted" style="margin:10px 0 0">🏥 ${esc(c.medical||"—")} · Target ${money(c.target)}</p>
+    ${v==="Pending"?'<div class="alert" style="margin-top:12px">Under review by the admin team. You will see the result here.</div>':""}
+    ${v==="Rejected"?`<div class="alert" style="margin-top:12px;background:#fef2f2;border-color:#fecaca;color:#991b1b"><b>Rejected:</b> ${esc(c.rejectReason||"No reason given.")} Please correct the details and resubmit.</div>`:""}
+    ${v==="Verified"?`<div class="progress"><i style="width:${p}%"></i></div><div class="amounts"><b>${money(c.raised)}</b><span class="muted">of ${money(c.target)} · ${p}%</span></div><p class="small muted">Live for donors.</p>`:""}
+    <div class="actions" style="margin-top:12px">${v!=="Verified"?`<button class="btn primary sm" onclick="openCampaignModal('${esc(c.id)}')">Edit &amp; Resubmit</button>`:""}${c.file?`<button class="btn light sm" onclick="viewCampDoc('${esc(c.id)}')">📎 Documents</button>`:""}</div></div>`}).join("")
+    ||'<div class="card"><p class="muted">You have not submitted a campaign yet.</p><button class="btn primary" onclick="openCampaignModal()">+ Submit your first campaign</button></div>'}
+function renderVerification(){
+  if(me?.role!=="admin")return;
+  const apps=campaigns.filter(c=>c.ownerId),cnt=x=>apps.filter(c=>verState(c)===x).length;
+  $("vPending").textContent=cnt("Pending");$("vVerified").textContent=cnt("Verified");$("vRejected").textContent=cnt("Rejected");
+  const f=$("vFilter").value,q=($("vSearch").value||"").toLowerCase();
+  const list=apps.filter(c=>(!f||verState(c)===f)&&(!q||[c.name,c.ownerName,c.ownerEmail,c.phone,c.medical].some(x=>String(x||"").toLowerCase().includes(q)))).sort((a,b)=>(b.submittedAt||0)-(a.submittedAt||0));
+  const chk=(ok,t)=>`<span class="status ${ok?"verified-s":"rejected-s"}" style="margin:2px 2px 0 0;display:inline-block">${ok?"✔":"✖"} ${t}</span>`;
+  $("verifyList").innerHTML=list.map(c=>{const v=verState(c),id=esc(c.id);
+    return`<div class="card"><div style="display:flex;gap:12px;align-items:center;justify-content:space-between"><div style="display:flex;gap:12px;align-items:center">${c.photo?`<img src="${c.photo}" alt="" style="width:60px;height:60px;border-radius:50%;object-fit:cover">`:'<div style="font-size:32px">👤</div>'}<div><b>${esc(c.name)}</b><br><span class="small muted">${esc(c.id)}</span></div></div>${verBadge(c)}</div>
+    <div class="vinfo"><div><span>Applicant</span>${esc(c.ownerName||"—")}</div><div><span>Applicant email</span>${esc(c.ownerEmail||"—")}</div>
+    <div><span>Patient age / gender</span>${esc(c.age??"—")} / ${esc(c.gender||"—")}</div><div><span>Contact phone</span>${esc(c.phone||"—")}</div>
+    <div><span>Patient location</span>${esc(c.location||"—")}</div><div><span>Hospital</span>${esc(c.medical||"—")}${c.medicalLocation?", "+esc(c.medicalLocation):""}</div>
+    <div><span>Category</span>${esc(c.category)}</div><div><span>Target</span><b>${money(c.target)}</b></div></div>
+    <p class="small muted" style="margin:0 0 10px">${esc(c.desc||"")}</p>
+    <div>${chk(!!c.photo,"Photo")}${chk(!!c.file,"Medical documents")}${chk(!!c.phone,"Phone")}${chk(!!c.medical&&!!c.medicalLocation,"Hospital details")}${chk(hasPay(c),"Payment details")}</div>
+    ${v==="Rejected"?`<div class="alert" style="margin-top:10px;background:#fef2f2;border-color:#fecaca;color:#991b1b">Reason: ${esc(c.rejectReason||"—")}</div>`:""}
+    <div class="actions" style="margin-top:14px"><button class="btn light sm" onclick="viewCampaignDetails('${id}')">👁 Details</button>${c.file?`<button class="btn light sm" onclick="viewCampDoc('${id}')">📎 Documents</button>`:""}${hasPay(c)?`<button class="btn light sm" onclick="viewPay('${id}')">🏦 Payment</button>`:""}
+    ${v!=="Verified"?`<button class="btn secondary sm" onclick="setVerify('${id}','Verified')">✔ Verify</button>`:""}${v!=="Rejected"?`<button class="btn danger sm" onclick="setVerify('${id}','Rejected')">✖ Reject</button>`:""}${v!=="Pending"?`<button class="btn light sm" onclick="setVerify('${id}','Pending')">↺ Back to pending</button>`:""}</div></div>`}).join("")
+    ||'<div class="card"><p class="muted">No campaigns in this list.</p></div>';
+  updateNavBadge()}
+function setVerify(id,state){
+  if(me?.role!=="admin")return;const c=campaigns.find(x=>x.id===id);if(!c)return;
+  if(state==="Verified"){
+    const miss=[!c.photo&&"photo",!c.file&&"medical documents",!(c.medical&&c.medicalLocation)&&"hospital details",!hasPay(c)&&"payment details"].filter(Boolean);
+    if(!confirm(miss.length?`Missing: ${miss.join(", ")}. Verify "${c.name}" anyway?`:`Verify patient "${c.name}" and make this campaign live for donors?`))return;
+    c.verify="Verified";c.rejectReason="";c.verifiedAt=Date.now()}
+  else if(state==="Rejected"){
+    const r=prompt("Reason for rejection (shown to the applicant):");if(r===null)return;
+    if(!r.trim())return toast("A reason is required.");c.verify="Rejected";c.rejectReason=r.trim()}
+  else{c.verify="Pending";c.rejectReason=""}
+  save();renderVerification();renderCampaigns();if($("detailModal").classList.contains("show"))viewCampaignDetails(id);toast(state==="Verified"?"Campaign approved.":"Campaign marked "+state.toLowerCase()+".")}
+
+function viewCampaignDetails(id){
+  if(me?.role!=="admin")return;
+  const c=campaigns.find(x=>x.id===id);if(!c)return;
+  const v=verState(c),cid=esc(c.id),cl=clearedFor(c.id);
+  const kv=(k,val,copy)=>`<div class="kv"><span>${k}</span><b>${val?esc(val):"—"}</b>${copy&&val?`<button type="button" class="copy" data-v="${esc(val)}" onclick="copyText(this.dataset.v)">Copy</button>`:""}</div>`;
+  const sec=(t,body)=>`<div class="card" style="padding:6px 18px;background:#fff;margin-bottom:12px"><div style="font-weight:800;padding:12px 0 2px">${t}</div>${body}</div>`;
+  const doc=!c.file?'<p class="muted small">No document attached.</p>':/^data:image\//.test(c.file)?`<img class="proofimg" src="${c.file}" alt="Medical document" style="margin:10px 0">`:`<p><a class="btn light sm" style="text-decoration:none" href="${c.file}" download="${esc(c.fileName||c.id+"_documents")}">⬇ Download ${esc(c.fileName||"PDF document")}</a></p>`;
+  $("detailBox").innerHTML=`<div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">${c.photo?`<img src="${c.photo}" alt="" style="width:76px;height:76px;border-radius:50%;object-fit:cover">`:'<div style="font-size:42px">👤</div>'}<div><div style="font-size:19px;font-weight:800">${esc(c.name)}</div><div class="small muted">${cid} · ${esc(c.category)}</div><div style="margin-top:6px">${verBadge(c)} <span class="status ${c.status==="Active"?"active-s":"closed-s"}">${esc(c.status)}</span></div></div></div>`
+   +(v==="Rejected"?`<div class="alert" style="margin-bottom:12px;background:#fef2f2;border-color:#fecaca;color:#991b1b"><b>Rejected:</b> ${esc(c.rejectReason||"—")}</div>`:"")
+   +sec("🏥 Medical / Hospital Details",kv("Hospital / medical name",c.medical)+kv("Medical location",c.medicalLocation))
+   +sec("🏦 Medical Payment Details",kv("Payee / account holder",c.payName,1)+kv("Bank",c.payBank)+kv("Account number",c.payAcc,1)+kv("IFSC",c.payIfsc,1)+kv("UPI ID",c.payUpi,1))
+   +sec("🧑 Patient Details",kv("Age",c.age!=null&&c.age!==""?c.age+" years":"")+kv("Gender",c.gender)+kv("Contact phone",c.phone)+kv("Patient location",c.location)+kv("Description",c.desc))
+   +sec("📎 Medical Documents",doc)
+   +(c.ownerId?sec("👤 Applicant (campaign account)",kv("Name",c.ownerName)+kv("Email",c.ownerEmail)+kv("Submitted",c.submittedAt?new Date(c.submittedAt).toLocaleString("en-IN"):"")):"")
+   +sec("💰 Funding",kv("Target",money(c.target))+kv("Raised",money(c.raised))+kv("Bills cleared",money(cl)))
+   +`<div class="actions" style="margin-top:6px">${v!=="Verified"?`<button class="btn secondary" onclick="setVerify('${cid}','Verified')">✔ Approve</button>`:""}${v!=="Rejected"?`<button class="btn danger" onclick="setVerify('${cid}','Rejected')">✖ Reject</button>`:""}${v!=="Pending"?`<button class="btn light" onclick="setVerify('${cid}','Pending')">↺ Back to pending</button>`:""}<button class="btn light" onclick="$('detailModal').classList.remove('show')">Close</button></div>`;
+  $("detailModal").classList.add("show")}
+$("detailModal").addEventListener("click",e=>{if(e.target.id==="detailModal")e.target.classList.remove("show")});
+
+/* ---------- campaign photo & attached documents ---------- */
+let campPhoto="",campFile="",campFileName="";
+function showCampPhotoInfo(){$("cPhotoInfo").innerHTML=campPhoto?`<img src="${campPhoto}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:12px;vertical-align:middle"> <a href="#" onclick="campPhoto='';$('cPhoto').value='';showCampPhotoInfo();return false">Remove photo</a>`:""}
+function showCampFileInfo(){$("cFileInfo").innerHTML=campFile?`📎 ${esc(campFileName||"Document attached")} · <a href="#" onclick="campFile='';campFileName='';$('cFile').value='';showCampFileInfo();return false">Remove</a>`:""}
+function readCampPhoto(inp){
+  const f=inp.files[0];if(!f)return;
+  if(!/^image\//.test(f.type)){inp.value="";return toast("Please choose an image file.")}
+  const r=new FileReader();
+  r.onload=()=>{const img=new Image();
+    img.onload=()=>{const k=Math.min(1,600/Math.max(img.width,img.height)),cv=document.createElement("canvas");cv.width=Math.round(img.width*k);cv.height=Math.round(img.height*k);
+      cv.getContext("2d").drawImage(img,0,0,cv.width,cv.height);campPhoto=cv.toDataURL("image/jpeg",.8);showCampPhotoInfo()};
+    img.onerror=()=>{inp.value="";toast("Could not read this image.")};img.src=r.result};
+  r.readAsDataURL(f)}
+function readCampFile(inp){
+  const f=inp.files[0];if(!f)return;
+  if(f.size>800*1024){inp.value="";return toast("File too large. Max 800 KB.")}
+  if(!/^image\//.test(f.type)&&f.type!=="application/pdf"){inp.value="";return toast("Only image or PDF files are allowed.")}
+  const r=new FileReader();r.onload=()=>{campFile=r.result;campFileName=f.name;showCampFileInfo()};r.readAsDataURL(f)}
+function openDoc(url,fname,title){
+  $("proofTitle").textContent=title;
+  $("proofBox").innerHTML=/^data:image\//.test(url)?`<img class="proofimg" src="${url}" alt="${esc(title)}">`:`<p class="muted">PDF document</p><a class="btn primary" style="display:inline-block;text-decoration:none" href="${url}" download="${esc(fname)}">⬇ Download PDF</a>`;
+  $("proofModal").classList.add("show")}
+function viewCampDoc(id){const c=campaigns.find(x=>x.id===id);if(c?.file)openDoc(c.file,c.fileName||(c.id+"_documents"),"Medical Documents")}
+
+function hasPay(c){return !!(c&&(c.payName||c.payBank||c.payAcc||c.payIfsc||c.payUpi))}
+function viewPay(id){
+  const c=campaigns.find(x=>x.id===id);if(!c||!hasPay(c))return;
+  const admin=me?.role==="admin",mask=a=>a.length>4?"•".repeat(a.length-4)+a.slice(-4):a;
+  const row=(k,v,copy)=>v?`<div class="kv"><span>${k}</span><b>${esc(v)}</b>${copy&&admin?`<button type="button" class="copy" data-v="${esc(v)}" onclick="copyText(this.dataset.v)">Copy</button>`:""}</div>`:"";
+  $("proofTitle").textContent="Medical Payment Details";
+  $("proofBox").innerHTML=`<div class="small muted" style="margin-bottom:6px">${esc(c.name)}${c.medical?" · "+esc(c.medical):""}</div>`+
+    row("Payee",c.payName)+row("Bank",c.payBank)+row("Account No.",admin?c.payAcc:mask(c.payAcc||""),true)+row("IFSC",c.payIfsc,true)+(admin?row("UPI ID",c.payUpi,true):"")+
+    `<div class="kv"><span>Bills cleared so far</span><b>${money(clearedFor(c.id))}</b></div>`+
+    (admin?"":'<p class="small muted">Full account details are visible to the administrator only.</p>');
+  $("proofModal").classList.add("show")}
+
+/* ---------- cleared medical bills (admin manages, donors view) ---------- */
+let billProof=null;
+const fmtDay=d=>{const t=Date.parse(d);return isNaN(t)?String(d||"-"):new Date(t).toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})};
+function clearedFor(cid,skipId){return bills.filter(b=>b.campaignId===cid&&b.id!==skipId).reduce((a,b)=>a+Number(b.amount||0),0)}
+function renderBills(){
+  const raised=transactions.filter(t=>t.status==="Completed").reduce((a,t)=>a+Number(t.amount||0),0),
+        cleared=bills.reduce((a,b)=>a+Number(b.amount||0),0);
+  $("bRaised").textContent=money(raised);$("bCleared").textContent=money(cleared);$("bCount").textContent=bills.length;
+  $("bPatients").textContent=new Set(bills.map(b=>(b.patient||"").trim().toLowerCase()).filter(Boolean)).size;
+  $("bBalance").textContent=money(Math.max(0,raised-cleared));
+  // utilisation table
+  const rows=campaigns.filter(c=>me?.role==="admin"||isVerified(c)).map(c=>({c,cl:clearedFor(c.id)}));
+  $("utilTable").innerHTML=`<table><thead><tr><th>Campaign</th><th>Raised</th><th>Bills Cleared</th><th>Balance</th><th>Utilised</th></tr></thead><tbody>${rows.map(({c,cl})=>{const p=c.raised>0?Math.min(100,Math.round(cl/c.raised*100)):0;
+    return`<tr><td><b>${esc(c.name)}</b></td><td>${money(c.raised)}</td><td><b>${money(cl)}</b></td><td>${money(Math.max(0,c.raised-cl))}</td><td><div class="util-bar"><i style="width:${p}%"></i></div><span class="small muted">${p}%</span></td></tr>`}).join("")||'<tr><td colspan="5" class="muted">No campaigns yet.</td></tr>'}</tbody></table>`;
+  // campaign filter (keeps selection)
+  const sel=$("billCampFilter"),cur=sel.value,ids=[...new Map(bills.map(b=>[b.campaignId,b.campaign])).entries()];
+  sel.innerHTML='<option value="">All campaigns</option>'+ids.map(([id,n])=>`<option value="${esc(id)}">${esc(n)}</option>`).join("");
+  sel.value=ids.some(x=>x[0]===cur)?cur:"";
+  const q=($("billSearch").value||"").toLowerCase(),cf=sel.value,admin=me?.role==="admin";
+  const list=bills.filter(b=>(!cf||b.campaignId===cf)&&(!q||[b.id,b.patient,b.hospital,b.billNo,b.campaign,b.desc].some(x=>String(x||"").toLowerCase().includes(q))))
+    .sort((a,b)=>(b.ts||0)-(a.ts||0));
+  $("billBody").innerHTML=list.map(b=>`<tr><td>${esc(b.id)}</td><td><b>${esc(b.patient)}</b></td><td>${esc(b.hospital)}</td><td>${esc(b.campaign)}</td><td>${esc(b.billNo)}</td><td class="bill-desc">${esc(b.desc)}</td><td><b>${money(b.amount)}</b></td><td>${fmtDay(b.date)}</td><td>${esc(b.mode)}${b.ref?`<br><span class="small muted">Ref: ${esc(b.ref)}</span>`:""}</td><td><span class="status cleared">✔ Cleared</span></td>
+    <td>${b.proof?`<button class="btn light sm" onclick="viewProof('${esc(b.id)}')">View</button>`:'<span class="muted">—</span>'}</td>
+    ${admin?`<td><button class="btn light sm" onclick="openBillModal('${esc(b.id)}')">Edit</button> <button class="btn danger sm" onclick="deleteBill('${esc(b.id)}')">Delete</button></td>`:""}</tr>`).join("")
+    ||`<tr><td colspan="${admin?12:11}" class="muted">No cleared bills to show yet.</td></tr>`}
+function populateBillCampaigns(sel){$("bCampaign").innerHTML=campaigns.map(c=>`<option value="${esc(c.id)}">${esc(c.name)} — ${money(c.raised)} raised</option>`).join("");if(sel)$("bCampaign").value=sel}
+function openBillModal(id){
+  if(me?.role!=="admin")return;
+  if(!campaigns.length)return toast("Create a campaign first.");
+  const b=id?bills.find(x=>x.id===id):null;
+  $("bmTitle").textContent=b?"Edit Cleared Bill":"Record Cleared Medical Bill";$("bId").value=b?b.id:"";
+  populateBillCampaigns(b?.campaignId);
+  $("bPatient").value=b?.patient||"";$("bHospital").value=b?.hospital||"";$("bBillNo").value=b?.billNo||"";$("bAmount").value=b?.amount||"";
+  $("bDate").value=b?.date||new Date().toISOString().slice(0,10);$("bMode").value=b?.mode||"Bank Transfer";$("bRef").value=b?.ref||"";$("bDesc").value=b?.desc||"";
+  $("bProof").value="";billProof=b?.proof||null;if(!b)fillBillHospital();
+  $("bProofInfo").innerHTML=billProof?'Proof already attached. Choose a new file to replace it, or <a href="#" onclick="billProof=null;$(\'bProofInfo\').textContent=\'Proof removed (save to apply).\';return false">remove it</a>.':"";
+  $("billModal").classList.add("show")}
+function fillBillHospital(){const c=campaigns.find(x=>x.id===$("bCampaign").value);if(c?.medical&&!$("bHospital").value.trim())$("bHospital").value=c.medical}
+function closeBillModal(){$("billModal").classList.remove("show")}
+function readBillProof(inp){
+  const f=inp.files[0];if(!f)return;
+  if(f.size>800*1024){inp.value="";return toast("File too large. Max 800 KB.")}
+  if(!/^image\//.test(f.type)&&f.type!=="application/pdf"){inp.value="";return toast("Only image or PDF files are allowed.")}
+  const r=new FileReader();r.onload=()=>{billProof=r.result;$("bProofInfo").textContent="Attached: "+f.name};r.readAsDataURL(f)}
+function submitBill(){
+  if(me?.role!=="admin")return;if(!$("billForm").reportValidity())return;
+  const id=$("bId").value,c=campaigns.find(x=>x.id===$("bCampaign").value),amount=Number($("bAmount").value);
+  if(!c)return toast("Choose a campaign.");if(!(amount>0))return toast("Enter a valid amount.");
+  const avail=c.raised-clearedFor(c.id,id);
+  if(amount>avail&&!confirm(`This bill (${money(amount)}) is more than the funds still available for "${c.name}" (${money(Math.max(0,avail))}).\n\nSave anyway?`))return;
+  const data={campaignId:c.id,campaign:c.name,patient:$("bPatient").value.trim(),hospital:$("bHospital").value.trim(),billNo:$("bBillNo").value.trim(),amount,date:$("bDate").value,ts:Date.parse($("bDate").value)||Date.now(),mode:$("bMode").value,ref:$("bRef").value.trim(),desc:$("bDesc").value.trim(),proof:billProof||""};
+  if(id)Object.assign(bills.find(x=>x.id===id),data);
+  else{let n=bills.length+1,nid;do{nid="BILL-"+String(n++).padStart(3,"0")}while(bills.some(b=>b.id===nid));bills.push({id:nid,...data})}
+  try{save()}catch(e){}
+  closeBillModal();renderBills();toast("Cleared bill saved.")}
+function deleteBill(id){if(me?.role!=="admin")return;if(!confirm("Delete this cleared-bill record?"))return;bills=bills.filter(b=>b.id!==id);save();renderBills()}
+function viewProof(id){const b=bills.find(x=>x.id===id);if(b?.proof)openDoc(b.proof,b.id+"_proof","Bill Proof")}
+$("proofModal").addEventListener("click",e=>{if(e.target.id==="proofModal")e.target.classList.remove("show")});
+$("billModal").addEventListener("click",e=>{if(e.target.id==="billModal")closeBillModal()});
+
+/* ---------- Excel export / import (admin) ---------- */
+function sheets(){return{
+  camp:campaigns.map(c=>({"Campaign ID":c.id,"Name":c.name,"Category":c.category,"Location":c.location,"Medical Name":c.medical||"","Medical Location":c.medicalLocation||"","Phone":c.phone||"","Age":c.age??"","Gender":c.gender||"","Payee Name":c.payName||"","Bank Name":c.payBank||"","Account No.":c.payAcc||"","IFSC":c.payIfsc||"","UPI ID":c.payUpi||"","Target (INR)":c.target,"Raised (INR)":c.raised,"Status":c.status,"Verification":verState(c),"Description":c.desc})),
+  tx:transactions.map(t=>({"Transaction ID":t.id,"Donor":t.donor,"Email":t.email,"Campaign ID":t.campaignId,"Campaign":t.campaign,"Amount (INR)":t.amount,"Method":t.method,"Date":t.date,"Status":t.status,"Message":t.message||""})),
+  donors:users.filter(u=>u.role==="donor").map(u=>({"Name":u.name,"Email":u.email,"Joined":new Date(u.created).toLocaleDateString("en-IN")})),
+  bills:bills.map(b=>({"Bill ID":b.id,"Campaign ID":b.campaignId,"Campaign":b.campaign,"Patient":b.patient,"Hospital":b.hospital,"Bill No.":b.billNo,"Description":b.desc,"Amount (INR)":b.amount,"Cleared On":b.date,"Payment Mode":b.mode,"Reference":b.ref||""}))}}
+function exportXLSX(w){
+  if(me?.role!=="admin")return;if(typeof XLSX==="undefined")return toast("Excel library needs internet to load.");
+  recalc();const s=sheets(),wb=XLSX.utils.book_new();
+  const add=(rows,name,head)=>XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows.length?rows:[head]),name);
+  if(w==="all"||w==="camp")add(s.camp,"Campaigns",{"Campaign ID":"","Name":"","Category":"","Location":"","Medical Name":"","Medical Location":"","Phone":"","Age":"","Gender":"","Payee Name":"","Bank Name":"","Account No.":"","IFSC":"","UPI ID":"","Target (INR)":"","Raised (INR)":"","Status":"","Verification":"","Description":""});
+  if(w==="all"||w==="tx")add(s.tx,"Transactions",{"Transaction ID":"","Donor":"","Email":"","Campaign ID":"","Campaign":"","Amount (INR)":"","Method":"","Date":"","Status":"","Message":""});
+  if(w==="all")add(s.donors,"Donors",{"Name":"","Email":"","Joined":""});
+  if(w==="all"||w==="bills")add(s.bills,"Cleared Bills",{"Bill ID":"","Campaign ID":"","Campaign":"","Patient":"","Hospital":"","Bill No.":"","Description":"","Amount (INR)":"","Cleared On":"","Payment Mode":"","Reference":""});
+  XLSX.writeFile(wb,"MediHope_"+(w==="all"?"Full":w==="camp"?"Campaigns":w==="bills"?"ClearedBills":"Transactions")+"_"+new Date().toISOString().slice(0,10)+".xlsx");toast("Excel downloaded.")}
+function importXLSX(file,w){
+  if(me?.role!=="admin"||!file)return;if(typeof XLSX==="undefined")return toast("Excel library needs internet to load.");
+  const r=new FileReader();
+  r.onload=e=>{try{
+    const wb=XLSX.read(e.target.result,{type:"array"});let nc=0,nt=0,nb=0;
+    const rows=n=>wb.Sheets[n]?XLSX.utils.sheet_to_json(wb.Sheets[n],{defval:""}):(wb.SheetNames.length===1?XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:""}):[]);
+    if(w==="camp"||w==="all")rows("Campaigns").forEach(x=>{
+      const name=String(x["Name"]||"").trim();if(!name)return;
+      const cat=["Emergency","Surgery","Treatment","Child Care"].includes(x["Category"])?x["Category"]:"Emergency";
+      const data={name,category:cat,location:String(x["Location"]||""),...("Medical Name" in x?{medical:String(x["Medical Name"]||"")}:{}),...("Verification" in x&&["Verified","Pending","Rejected"].includes(x["Verification"])?{verify:x["Verification"]}:{}),...("Payee Name" in x?{payName:String(x["Payee Name"]||"")}:{}),...("Bank Name" in x?{payBank:String(x["Bank Name"]||"")}:{}),...("Account No." in x?{payAcc:String(x["Account No."]||"")}:{}),...("IFSC" in x?{payIfsc:String(x["IFSC"]||"").toUpperCase()}:{}),...("UPI ID" in x?{payUpi:String(x["UPI ID"]||"")}:{}),...("Phone" in x?{phone:String(x["Phone"]||"")}:{}),...("Age" in x?{age:x["Age"]===""?"":Number(x["Age"])}:{}),...("Gender" in x?{gender:String(x["Gender"]||"")}:{}),...("Medical Location" in x?{medicalLocation:String(x["Medical Location"]||"")}:{}),target:Number(x["Target (INR)"])||1,desc:String(x["Description"]||""),status:x["Status"]==="Closed"?"Closed":"Active"};
+      const id=String(x["Campaign ID"]||"").trim(),ex=id&&campaigns.find(c=>c.id===id);
+      if(ex)Object.assign(ex,data);else{let n=campaigns.length+1,nid=id;if(!nid)do{nid="CAMP-"+String(n++).padStart(3,"0")}while(campaigns.some(c=>c.id===nid));campaigns.push({id:nid,raised:0,icon:"❤",...data})}nc++});
+    if(w==="tx"||w==="all")rows("Transactions").forEach(x=>{
+      const id=String(x["Transaction ID"]||"").trim(),amt=Number(x["Amount (INR)"]);if(!id||!(amt>0))return;
+      const cid=String(x["Campaign ID"]||"").trim(),camp=campaigns.find(c=>c.id===cid);
+      const data={donor:String(x["Donor"]||""),email:String(x["Email"]||"").trim(),campaignId:cid,campaign:camp?camp.name:String(x["Campaign"]||""),amount:amt,method:String(x["Method"]||"Imported"),date:String(x["Date"]||new Date().toLocaleString("en-IN")),status:x["Status"]==="Cancelled"?"Cancelled":"Completed",message:String(x["Message"]||"")};
+      const ex=transactions.find(t=>t.id===id);if(ex)Object.assign(ex,data);else transactions.push({id,ts:Date.parse(data.date)||Date.now(),...data});nt++});
+    if(w==="bills"||w==="all")rows("Cleared Bills").forEach(x=>{
+      const amt=Number(x["Amount (INR)"]),patient=String(x["Patient"]||"").trim();if(!(amt>0)||!patient)return;
+      const cid=String(x["Campaign ID"]||"").trim(),camp=campaigns.find(c=>c.id===cid);
+      let dt=x["Cleared On"];if(typeof dt==="number")dt=new Date(Math.round((dt-25569)*86400000)).toISOString().slice(0,10);dt=String(dt||"");
+      const iso=isNaN(Date.parse(dt))?new Date().toISOString().slice(0,10):new Date(Date.parse(dt)).toISOString().slice(0,10);
+      const data={campaignId:cid,campaign:camp?camp.name:String(x["Campaign"]||""),patient,hospital:String(x["Hospital"]||""),billNo:String(x["Bill No."]||""),desc:String(x["Description"]||""),amount:amt,date:iso,ts:Date.parse(iso),mode:String(x["Payment Mode"]||"Bank Transfer"),ref:String(x["Reference"]||"")};
+      const id=String(x["Bill ID"]||"").trim(),ex=id&&bills.find(b=>b.id===id);
+      if(ex)Object.assign(ex,data);else{let n=bills.length+1,nid=id;if(!nid)do{nid="BILL-"+String(n++).padStart(3,"0")}while(bills.some(b=>b.id===nid));bills.push({id:nid,proof:"",...data})}nb++});
+    recalc();save();renderCampaigns();renderTransactions();toast(`Import done: ${nc} campaign(s), ${nt} transaction(s), ${nb} bill(s).`);
+  }catch(err){toast("Could not read this Excel file.")}};
+  r.readAsArrayBuffer(file)}
+
+function resetDemo(){if(!confirm("Reset all campaigns, transactions and donor accounts?"))return;
+  campaigns=JSON.parse(JSON.stringify(seedCampaigns));transactions=[];bills=[];users=users.filter(u=>u.role==="admin");save();recalc();toast("Demo data reset.");showPage("dashboard")}
+
+/* ---------- boot ---------- */
+(async function(){await ensureAdmin();initPay();updateQR();startApp()})();
+</script>
+</body>
+</html>
